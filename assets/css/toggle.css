@@ -1,0 +1,176 @@
+/* Dark Mode Toggle for Elementor: toggle button + theme transition.
+   Look values (--dmt-*) are printed by the plugin from the settings page. */
+
+/* Colors for the current mode. Light is the default; dark is picked by the
+   html[data-dmt-theme="dark"] attribute (or .dmt-force-dark in the admin preview). */
+.dmt-toggle {
+	--dmt-c-bg: var(--dmt-bg, #F7FAFC);
+	--dmt-c-icon: var(--dmt-icon, #0F1629);
+	--dmt-c-border: var(--dmt-border, #E2E6ED);
+	--dmt-c-bg-h: var(--dmt-bg-h, #EEF2F7);
+}
+html[data-dmt-theme="dark"] .dmt-toggle,
+.dmt-force-dark .dmt-toggle {
+	--dmt-c-bg: var(--dmt-bg-d, #1D2739);
+	--dmt-c-icon: var(--dmt-icon-d, #FFFFFF);
+	--dmt-c-border: var(--dmt-border-d, #2A3650);
+	--dmt-c-bg-h: var(--dmt-bg-h-d, #263248);
+}
+
+/* Base. [type="button"] raises specificity so theme button styles do not leak in. */
+.dmt-toggle[type="button"] {
+	-webkit-appearance: none;
+	appearance: none;
+	box-sizing: border-box;
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--dmt-size, 40px);
+	height: var(--dmt-size, 40px);
+	min-width: 0;
+	min-height: 0;
+	margin: 0;
+	padding: 0;
+	border: var(--dmt-bw, 1px) solid var(--dmt-c-border);
+	border-radius: var(--dmt-radius, 999px);
+	background: var(--dmt-c-bg);
+	color: var(--dmt-c-icon);
+	box-shadow: var(--dmt-shadow, none);
+	font-size: 0;
+	line-height: 1;
+	text-transform: none;
+	text-decoration: none;
+	vertical-align: middle;
+	cursor: pointer;
+	overflow: hidden;
+	transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+.dmt-toggle[type="button"]:focus {
+	background: var(--dmt-c-bg);
+	color: var(--dmt-c-icon);
+}
+.dmt-toggle[type="button"]:hover {
+	background: var(--dmt-c-bg-h);
+	color: var(--dmt-c-icon);
+	border-color: var(--dmt-c-border);
+}
+.dmt-toggle[type="button"]:focus-visible {
+	outline: 2px solid var(--dmt-c-icon);
+	outline-offset: 2px;
+}
+
+/* Style: button (sun shows in dark mode, moon shows in light mode) */
+.dmt-toggle .dmt-icon {
+	display: inline-flex;
+	width: calc(var(--dmt-size, 40px) * .5);
+	height: calc(var(--dmt-size, 40px) * .5);
+	pointer-events: none;
+}
+.dmt-toggle .dmt-icon svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.dmt-toggle .dmt-icon-sun {
+	display: none;
+}
+html[data-dmt-theme="dark"] .dmt-toggle .dmt-icon-sun,
+.dmt-force-dark .dmt-toggle .dmt-icon-sun {
+	display: inline-flex;
+}
+html[data-dmt-theme="dark"] .dmt-toggle .dmt-icon-moon,
+.dmt-force-dark .dmt-toggle .dmt-icon-moon {
+	display: none;
+}
+
+/* Style: switch (sliding thumb, sun on the left and moon on the right) */
+.dmt-toggle.dmt-style-switch[type="button"] {
+	width: calc(var(--dmt-size, 40px) * 1.9);
+}
+.dmt-style-switch .dmt-track {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 calc(var(--dmt-size, 40px) * .2);
+	pointer-events: none;
+}
+.dmt-style-switch .dmt-sw {
+	display: inline-flex;
+	width: calc(var(--dmt-size, 40px) * .4);
+	height: calc(var(--dmt-size, 40px) * .4);
+}
+.dmt-style-switch .dmt-sw svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.dmt-style-switch .dmt-thumb {
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: calc(var(--dmt-size, 40px) - 2 * var(--dmt-bw, 1px) - 6px);
+	height: calc(var(--dmt-size, 40px) - 2 * var(--dmt-bw, 1px) - 6px);
+	border-radius: var(--dmt-radius, 999px);
+	background: var(--dmt-c-icon);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform .25s ease;
+}
+html[data-dmt-theme="dark"] .dmt-style-switch .dmt-thumb,
+.dmt-force-dark .dmt-style-switch .dmt-thumb {
+	transform: translateX(calc(var(--dmt-size, 40px) * .9));
+}
+
+/* Icon inside the thumb: sun in light mode, moon in dark mode.
+   Drawn in the toggle background color, so it contrasts with the thumb. */
+.dmt-style-switch .dmt-th {
+	display: inline-flex;
+	width: calc(var(--dmt-size, 40px) * .4);
+	height: calc(var(--dmt-size, 40px) * .4);
+	color: var(--dmt-c-bg);
+}
+.dmt-style-switch .dmt-th svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.dmt-style-switch .dmt-th-moon {
+	display: none;
+}
+html[data-dmt-theme="dark"] .dmt-style-switch .dmt-th-sun,
+.dmt-force-dark .dmt-style-switch .dmt-th-sun {
+	display: none;
+}
+html[data-dmt-theme="dark"] .dmt-style-switch .dmt-th-moon,
+.dmt-force-dark .dmt-style-switch .dmt-th-moon {
+	display: inline-flex;
+}
+
+/* Smooth color change, only while switching (class is added by toggle.js for a moment). */
+html.dmt-transition,
+html.dmt-transition *,
+html.dmt-transition *::before,
+html.dmt-transition *::after {
+	transition-property: background-color, color, border-color, fill, stroke, box-shadow, transform !important;
+	transition-duration: var(--dmt-ms, 300ms) !important;
+	transition-timing-function: ease !important;
+	transition-delay: 0s !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html.dmt-transition,
+	html.dmt-transition *,
+	html.dmt-transition *::before,
+	html.dmt-transition *::after,
+	.dmt-toggle[type="button"],
+	.dmt-style-switch .dmt-thumb {
+		transition: none !important;
+	}
+}
